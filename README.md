@@ -3,7 +3,7 @@
 buyer-service endpoints:
 
 POST /buyer/buy?productId={} - купить товар<?br>
-POST /buyer/grade - поставить оценку товару (нельзя если не куплен товар)
+POST /buyer/grade - поставить оценку товару (нельзя если не куплен товар)<?br>
 POST /buyer/review - оставить отзыв (нельзя если не куплен товар)
 GET /buyer/orders - история покупок
 DELETE /buyer/orders/refund?orderId={} - вернуть , если не прошел день с момента покупки
