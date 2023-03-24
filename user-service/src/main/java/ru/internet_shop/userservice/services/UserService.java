@@ -15,7 +15,7 @@ public interface UserService {
     User findById(Long id);
     User addUser(UserRegistrationDTO user);
     void deleteUserById(Long id);
-
+    void decreaseBalance(Long userId, Integer sum);
     void addMoneyToBalance(Long id, Integer sum);
 
     boolean checkUsernameAndPasswordIsCorrect(UserLoginDTO user);

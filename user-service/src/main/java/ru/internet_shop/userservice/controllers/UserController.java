@@ -34,6 +34,13 @@ public class UserController {
         return new UserDTO(userService.findById(id));
     }
 
+    @PostMapping("/{id}")
+    public HttpStatus decreaseBalance(@RequestParam("sum") Integer sum,
+                                      @PathVariable("id") Long id) {
+        userService.decreaseBalance(id, sum);
+        return HttpStatus.OK;
+    }
+
     @DeleteMapping("/{id}/delete")
     public HttpStatus deleteUser(@PathVariable Long id) {
         userService.deleteUserById(id);

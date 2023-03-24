@@ -17,14 +17,12 @@ spring:
             Path=/buyer/**
           filters:
             - AuthFilter
-
         - id: admin-service
           uri: lb://admin-service
           predicates:
             Path=/admin/**
           filters:
             - AuthFilter
-
         - id: auth-service
           uri: lb://auth-service
           predicates:

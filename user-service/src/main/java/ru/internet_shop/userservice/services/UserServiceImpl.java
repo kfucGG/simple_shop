@@ -49,6 +49,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public void decreaseBalance(Long userId, Integer sum) {
+        User user = findById(userId);
+        user.setBalance(user.getBalance() - sum);
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
     public void addMoneyToBalance(Long id, Integer sum) {
         User user = findById(id);
         user.setBalance(user.getBalance() + sum);

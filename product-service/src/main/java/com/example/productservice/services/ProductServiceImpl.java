@@ -3,9 +3,11 @@ package com.example.productservice.services;
 
 import com.example.productservice.dto.DiscountDTO;
 import com.example.productservice.dto.ProductDTO;
+import com.example.productservice.dto.UserDTO;
 import com.example.productservice.entity.Discount;
 import com.example.productservice.entity.Product;
 import com.example.productservice.feignClients.OrderFeignClient;
+import com.example.productservice.feignClients.UserFeignClient;
 import com.example.productservice.repositories.ProductRepository;
 import com.example.productservice.services.interfaces.DiscountService;
 import com.example.productservice.services.interfaces.ProductService;
@@ -24,6 +26,7 @@ public class ProductServiceImpl implements ProductService {
     private final OrderFeignClient orderFeignClient;
     private final ProductRepository productRepository;
     private final DiscountService discountService;
+    private final UserFeignClient userClient;
 
 
     @Override
@@ -116,6 +119,9 @@ public class ProductServiceImpl implements ProductService {
     public void buyProduct(Long productId, Long userId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("product is not found"));
+        UserDTO userDTO = userClient.getUser(userId);
+        if (userDTO.getBalance() < product.getProductPrice())
+            throw new RuntimeException("not enough money on balance");
 
         if (product.getAmount() == null) {
             throw new RuntimeException("product amount is 0");
@@ -123,6 +129,7 @@ public class ProductServiceImpl implements ProductService {
         if (product.getAmount() <= 1)
             throw new RuntimeException("product amount is 0");
         product.setAmount(product.getAmount() - 1);
+        userClient.decreaseBalance(product.getProductPrice(), userId);
         orderFeignClient.addOrder(productId, userId);
         productRepository.save(product);
     }

@@ -15,13 +15,11 @@ public class JwtUtil {
     private final String secret = "SECRET_KEY";
 
     public static String generateToken(String username){
-        Date expiresAt = Date.from(ZonedDateTime.now().plusMinutes(60).toInstant());
         return JWT.create()
                 .withSubject("User details")
                 .withClaim("username", username)
                 .withIssuer("auth-service")
                 .withIssuedAt(new Date())
-                .withExpiresAt(expiresAt)
                 .sign(Algorithm.HMAC256("SECRET"));
     }
 
