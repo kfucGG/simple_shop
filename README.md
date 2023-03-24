@@ -2,7 +2,7 @@
 
 buyer-service endpoints:
 
-POST /buyer/buy?productId={} - купить товар
+POST /buyer/buy?productId={} - купить товар<?br>
 POST /buyer/grade - поставить оценку товару (нельзя если не куплен товар)
 POST /buyer/review - оставить отзыв (нельзя если не куплен товар)
 GET /buyer/orders - история покупок
