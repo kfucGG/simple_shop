@@ -1,5 +1,7 @@
 package ru.internet_shop.userservice.services;
 
+import ru.internet_shop.userservice.dto.UserLoginDTO;
+import ru.internet_shop.userservice.dto.UserRegistrationDTO;
 import ru.internet_shop.userservice.entity.Role;
 import ru.internet_shop.userservice.entity.User;
 
@@ -11,12 +13,12 @@ public interface UserService {
     List<User> findAll();
 
     User findById(Long id);
-    User addUser(String username, String password, String email);
+    User addUser(UserRegistrationDTO user);
     void deleteUserById(Long id);
 
     void addMoneyToBalance(Long id, Integer sum);
 
-    boolean checkUsernameAndPasswordIsCorrect(String username, String password);
+    boolean checkUsernameAndPasswordIsCorrect(UserLoginDTO user);
     Role findUserRoleByUsername(String username);
     Long userIsExists(String username);
 }

@@ -18,22 +18,17 @@ public class AuthFilter extends AbstractGatewayFilterFactory {
 
     @Override
     public GatewayFilter apply(Object config) {
-        for (int i = 0; i < 1; i++)
-            System.out.println("first filter");
-
         return ((exchange, chain) -> {
-            if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION))
-                throw new RuntimeException("dont have token");
+            String jwtToken = FilterUtil.retrieveTokenFromRequest(exchange.getRequest().getHeaders());
 
-            String[] partsOfToken = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0)
-                    .split(" ");
-
-            if (partsOfToken.length != 2 || !partsOfToken[0].equals("Bearer"))
-                throw new RuntimeException("invalid token");
-
+            if (exchange.getRequest().getURI().toString().contains("admin")) {
+                boolean isAdmin = FilterUtil.isAdmin(jwtToken);
+                if (!isAdmin)
+                    throw new RuntimeException("you can not call admin functional cause u have role user");
+            }
             return webClientBuilder.build()
                     .post()
-                    .uri("http://auth-service/auth/validate?token=" + partsOfToken[1])
+                    .uri("http://localhost:8080/auth/validate?token=" + jwtToken)
                     .retrieve()
                     .bodyToMono(Long.class)
                     .map(a -> {

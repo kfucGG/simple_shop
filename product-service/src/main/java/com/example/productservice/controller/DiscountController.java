@@ -2,7 +2,7 @@ package com.example.productservice.controller;
 
 
 import com.example.productservice.dto.DiscountDTO;
-import com.example.productservice.services.ProductService;
+import com.example.productservice.services.interfaces.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +23,9 @@ public class DiscountController {
     }
 
     @PostMapping("/add/organization")
-    public HttpStatus addDiscountToGroupOfProductByOrganization(@RequestParam("organization") String organization,
+    public HttpStatus addDiscountToGroupOfProductByOrganization(@RequestParam("organizationId") Long organizationId,
                                                                 @RequestBody DiscountDTO discount){
-        productService.addDiscountToGroupOfProductByOrganization(organization, discount);
+        productService.addDiscountToGroupOfProductByOrganization(organizationId, discount);
         return HttpStatus.OK;
     }
 
@@ -51,9 +51,9 @@ public class DiscountController {
     }
 
     @PostMapping("/update/organization")
-    public HttpStatus updateDiscountGroupOfProductByOrganization(@RequestParam("organization") String organization,
+    public HttpStatus updateDiscountGroupOfProductByOrganization(@RequestParam("organizationId") Long organizationId,
                                                                  @RequestBody DiscountDTO discount) {
-        productService.updateDiscountToGroupOfProductByOrganization(organization, discount);
+        productService.updateDiscountToGroupOfProductByOrganization(organizationId, discount);
         return HttpStatus.OK;
     }
 }

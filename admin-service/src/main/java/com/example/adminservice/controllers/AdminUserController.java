@@ -35,7 +35,7 @@ public class AdminUserController {
 
     @PostMapping("/{userId}/addbalance")
     public HttpStatus addBalanceToUser(@PathVariable Long userId,
-                                 @RequestParam("sum") Integer sum) {
+                                       @RequestParam("sum") Integer sum) {
         userClient.addMoneyToUserBalance(userId, sum);
         return HttpStatus.OK;
     }

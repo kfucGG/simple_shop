@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.internet_shop.userservice.dto.UserDTO;
+import ru.internet_shop.userservice.dto.UserLoginDTO;
+import ru.internet_shop.userservice.dto.UserRegistrationDTO;
 import ru.internet_shop.userservice.entity.User;
 import ru.internet_shop.userservice.services.UserService;
 
@@ -46,17 +48,13 @@ public class UserController {
     }
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.OK)
-    public String addUser(@RequestParam("username") String username,
-                          @RequestParam("password") String password,
-                          @RequestParam("email") String email) {
-        User user = userService.addUser(username, password, email);
-        return user.getUsername();
+    public String addUser(@RequestBody UserRegistrationDTO user) {
+        return userService.addUser(user).getUsername();
     }
 
     @PostMapping("/check")
-    public boolean checkIfUsernameExists(@RequestParam("username") String username,
-                                         @RequestParam("password") String password) {
-        return userService.checkUsernameAndPasswordIsCorrect(username, password);
+    public boolean checkIfUsernameExists(@RequestBody UserLoginDTO user) {
+        return userService.checkUsernameAndPasswordIsCorrect(user);
     }
     @PostMapping("/role")
     public String getUserRoleByUsername(@RequestParam("username") String username) {

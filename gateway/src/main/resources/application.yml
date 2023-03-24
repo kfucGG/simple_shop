@@ -11,15 +11,19 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
-        - id: user-service
-          uri: lb://user-service
+        - id: buyer-service
+          uri: lb://buyer-service
           predicates:
-            Path=/users/**
+            Path=/buyer/**
+          filters:
+            - AuthFilter
 
         - id: admin-service
           uri: lb://admin-service
           predicates:
             Path=/admin/**
+          filters:
+            - AuthFilter
 
         - id: auth-service
           uri: lb://auth-service
@@ -30,5 +34,6 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:7000/eureka
+    registry-fetch-interval-seconds: 5
   instance:
     prefer-ip-address: true

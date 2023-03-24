@@ -4,7 +4,10 @@ package ru.internet_shop.authenticationservice.feignClients;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.internet_shop.authenticationservice.dto.UserLoginDTO;
+import ru.internet_shop.authenticationservice.dto.UserRegistrationDTO;
 
 import java.util.HashMap;
 
@@ -12,13 +15,10 @@ import java.util.HashMap;
 public interface UserClient {
 
     @PostMapping("/users/add")
-    String registrateUser(@RequestParam("username") String username,
-                          @RequestParam("password") String password,
-                          @RequestParam("email") String email);
+    String registrateUser(@RequestBody UserRegistrationDTO user);
 
     @PostMapping("/users/check")
-    boolean isUsernameAndPasswordIsCorrect(@RequestParam("username") String username,
-                                           @RequestParam("password") String password);
+    boolean isUsernameAndPasswordIsCorrect(@RequestBody UserLoginDTO user);
     @PostMapping("/users/validate")
     Long validateToken(@RequestParam("username") String username);
 

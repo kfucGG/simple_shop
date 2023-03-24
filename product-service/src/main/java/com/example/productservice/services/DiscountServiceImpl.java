@@ -3,6 +3,7 @@ package com.example.productservice.services;
 import com.example.productservice.dto.DiscountDTO;
 import com.example.productservice.entity.Discount;
 import com.example.productservice.repositories.DiscountRepository;
+import com.example.productservice.services.interfaces.DiscountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

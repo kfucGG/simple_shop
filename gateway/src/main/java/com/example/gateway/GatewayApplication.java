@@ -3,11 +3,15 @@ package com.example.gateway;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 
 @SpringBootApplication
+@EnableDiscoveryClient
 public class GatewayApplication {
 
     public static void main(String[] args) {
@@ -20,6 +24,8 @@ public class GatewayApplication {
     }
     @Bean
     public WebClient.Builder webClientBuilder() {
-        return WebClient.builder();
+        HttpClient httpClient = HttpClient.create().resolver(DefaultAddressResolverGroup.INSTANCE);
+        return WebClient.builder().clientConnector(new ReactorClientHttpConnector(httpClient));
     }
+
 }

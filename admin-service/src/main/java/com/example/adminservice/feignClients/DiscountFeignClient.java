@@ -17,7 +17,7 @@ public interface DiscountFeignClient {
                                     @PathVariable Long productId);
 
     @PostMapping("/discount/add/organization")
-    HttpStatus addDiscountToGroupOfProductByOrganization(@RequestParam String organization,
+    HttpStatus addDiscountToGroupOfProductByOrganization(@RequestParam Long organizationId,
                                                          @RequestBody DiscountDTO discount);
 
     @PostMapping("/discount/add/name")
@@ -33,6 +33,6 @@ public interface DiscountFeignClient {
                                                          @RequestBody DiscountDTO discount);
 
     @PostMapping("/discount/update/organization")
-    HttpStatus updateDiscountGroupOfProductByOrganization(@RequestParam String organization,
+    HttpStatus updateDiscountGroupOfProductByOrganization(@RequestParam Long organizationId,
                                                           @RequestBody DiscountDTO discount);
 }

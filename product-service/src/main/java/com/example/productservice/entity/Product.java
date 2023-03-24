@@ -25,7 +25,7 @@ public class Product {
     @Column(name = "product_description")
     private String productDescription;
 
-    private String organization;
+    private Long organizationId;
 
     @Column(name = "product_price")
     private Integer productPrice;
@@ -46,13 +46,7 @@ public class Product {
         this.productPrice = productDTO.getProductPrice();
         this.productDescription = productDTO.getProductDescription();
         this.amount = productDTO.getAmount();
-        this.organization = productDTO.getOrganization();
+        this.organizationId = productDTO.getOrganizationId();
     }
-    public Product(String productName, String productDescription, String organization, Integer productPrice, Integer amount) {
-        this.productName = productName;
-        this.productDescription = productDescription;
-        this.organization = organization;
-        this.productPrice = productPrice;
-        this.amount = amount;
-    }
+
 }

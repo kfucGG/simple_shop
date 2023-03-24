@@ -1,4 +1,4 @@
-package com.example.productservice.services;
+package com.example.productservice.services.interfaces;
 
 import com.example.productservice.dto.DiscountDTO;
 import com.example.productservice.entity.Discount;

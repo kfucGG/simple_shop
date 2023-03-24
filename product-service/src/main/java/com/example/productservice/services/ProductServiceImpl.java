@@ -5,13 +5,14 @@ import com.example.productservice.dto.DiscountDTO;
 import com.example.productservice.dto.ProductDTO;
 import com.example.productservice.entity.Discount;
 import com.example.productservice.entity.Product;
-import com.example.productservice.feignClients.OrderClient;
+import com.example.productservice.feignClients.OrderFeignClient;
 import com.example.productservice.repositories.ProductRepository;
+import com.example.productservice.services.interfaces.DiscountService;
+import com.example.productservice.services.interfaces.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class ProductServiceImpl implements ProductService {
 
-    private final OrderClient orderClient;
+    private final OrderFeignClient orderFeignClient;
     private final ProductRepository productRepository;
     private final DiscountService discountService;
 
@@ -32,8 +33,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findProductsByOrganization(String organization) {
-        return productRepository.findProductsByOrganization(organization)
+    public List<Product> findProductsByOrganization(Long organization) {
+        return productRepository.findProductsByOrganizationId(organization)
                 .orElseThrow(() -> new RuntimeException("no such product with that name of org."));
     }
 
@@ -58,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
         updatableProduct.setProductDescription(product.getProductDescription());
         updatableProduct.setProductPrice(product.getProductPrice());
         updatableProduct.setAmount(product.getAmount());
-        updatableProduct.setOrganization(product.getOrganization());
+        updatableProduct.setOrganizationId(product.getOrganizationId());
         productRepository.save(updatableProduct);
     }
 
@@ -80,7 +81,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void addDiscountToGroupOfProductByOrganization(String organization, DiscountDTO discount) {
+    public void addDiscountToGroupOfProductByOrganization(Long organization, DiscountDTO discount) {
         List<Product> products = findProductsByOrganization(organization);
         Discount newDiscount = discountService.saveDiscount(discount);
         products.stream().peek(a -> a.setProductDiscount(newDiscount)).collect(Collectors.toList());
@@ -105,22 +106,24 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void updateDiscountToGroupOfProductByOrganization(String organization, DiscountDTO discount) {
+    public void updateDiscountToGroupOfProductByOrganization(Long organization, DiscountDTO discount) {
         List<Product> products = findProductsByOrganization(organization);
         Discount newDiscount = discountService.saveDiscount(discount);
         products.stream().peek(a -> a.setProductDiscount(newDiscount)).collect(Collectors.toList());
     }
 
     @Transactional
-    public void buyProduct(Long productId) {
+    public void buyProduct(Long productId, Long userId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("product is not found"));
 
-        if (product.getAmount() == 0) {
+        if (product.getAmount() == null) {
             throw new RuntimeException("product amount is 0");
         }
+        if (product.getAmount() <= 1)
+            throw new RuntimeException("product amount is 0");
         product.setAmount(product.getAmount() - 1);
-        orderClient.addOrder(productId);
+        orderFeignClient.addOrder(productId, userId);
         productRepository.save(product);
     }
 

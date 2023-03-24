@@ -4,12 +4,15 @@ package com.example.orderservice.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "orders")
 @Data
 @NoArgsConstructor
+@ToString
 public class Order {
 
     @Id

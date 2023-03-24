@@ -21,14 +21,14 @@ public class AdminDiscountController {
     }
 
     @PostMapping("/add/organization")
-    public HttpStatus addDiscountToGroupOfProductByOrganization(@RequestParam String organization,
+    public HttpStatus addDiscountToGroupOfProductByOrganization(@RequestParam Long organizationId,
                                                                 @RequestBody DiscountDTO discount) {
-        return discountClient.addDiscountToGroupOfProductByOrganization(organization, discount);
+        return discountClient.addDiscountToGroupOfProductByOrganization(organizationId  , discount);
     }
 
     @PostMapping("/add/name")
     public HttpStatus addDiscountToGroupOfProductByProductName(@RequestParam String productName,
-                                                        @RequestBody DiscountDTO discount) {
+                                                                @RequestBody DiscountDTO discount) {
         return discountClient.addDiscountToGroupOfProductByProductName(productName, discount);
     }
     @PatchMapping("/update/{productId}")
@@ -44,8 +44,8 @@ public class AdminDiscountController {
     }
 
     @PatchMapping("/update/organization")
-    public HttpStatus updateDiscountGroupOfProductByOrganization(@RequestParam String organization,
+    public HttpStatus updateDiscountGroupOfProductByOrganization(@RequestParam Long organizationId,
                                                           @RequestBody DiscountDTO discount) {
-        return discountClient.updateDiscountGroupOfProductByOrganization(organization, discount);
+        return discountClient.updateDiscountGroupOfProductByOrganization(organizationId, discount);
     }
 }

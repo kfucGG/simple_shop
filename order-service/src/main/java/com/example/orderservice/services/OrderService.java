@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +27,27 @@ public class OrderService {
         orderRepository.save(order);
     }
 
+    public List<Order> getOrderByProductAndUserId(Long productId, Long userId) {
+        Optional<List<Order>> orders = orderRepository.findOrdersByUserIdAndProductId(userId, productId);
+        if (orders.isPresent()) {
+            System.out.println(orders.get());
+            return orders.get();
+        }
+        return Collections.emptyList();
+    }
+
+    @Transactional
+    public void refundUserOrderIfDayNotLeft(Long userId, Long orderId) {
+        Order order = getOrderById(orderId);
+        if (order.getOrderTime().plusDays(1L).isBefore(LocalDateTime.now()))
+            throw new RuntimeException("can not cancel order cause days gone");
+
+        orderRepository.deleteById(order.getId());
+    }
+    public Order getOrderById(Long orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("no such order"));
+    }
 
     public List<Order> getAllOrdersByUserId(Long userId) {
         return orderRepository.findOrdersByUserId(userId)

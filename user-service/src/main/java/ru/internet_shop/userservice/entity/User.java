@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.internet_shop.userservice.dto.UserLoginDTO;
+import ru.internet_shop.userservice.dto.UserRegistrationDTO;
 
 @Entity
 @Table(name = "users")
@@ -24,4 +26,14 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private Role role;
+
+    public User(UserRegistrationDTO user) {
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.email = user.getEmail();
+    }
+    public User(UserLoginDTO user) {
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+    }
 }

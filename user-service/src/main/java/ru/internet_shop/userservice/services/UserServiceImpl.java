@@ -4,6 +4,8 @@ package ru.internet_shop.userservice.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.internet_shop.userservice.dto.UserLoginDTO;
+import ru.internet_shop.userservice.dto.UserRegistrationDTO;
 import ru.internet_shop.userservice.entity.Role;
 import ru.internet_shop.userservice.entity.User;
 import ru.internet_shop.userservice.repositories.UserRepository;
@@ -32,14 +34,11 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User addUser(String username, String password, String email) {
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setEmail(email);
-        user.setBalance(0);
-        user.setRole(roleService.addRoleToUser("ROLE_USER"));
-        return userRepository.save(user);
+    public User addUser(UserRegistrationDTO user) {
+        User newUser = new User(user);
+        newUser.setBalance(0);
+        newUser.setRole(roleService.addRoleToUser("ROLE_USER"));
+        return userRepository.save(newUser);
     }
 
     @Override
@@ -56,10 +55,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkUsernameAndPasswordIsCorrect(String username, String password) {
-        User user = userRepository.findByUsername(username)
+    public boolean checkUsernameAndPasswordIsCorrect(UserLoginDTO loginUser) {
+        User user = userRepository.findByUsername(loginUser.getUsername())
                 .orElseThrow(() -> new RuntimeException("username does not exists"));
-        return user.getPassword().equals(password);
+        return user.getPassword().equals(loginUser.getPassword());
     }
 
     @Override

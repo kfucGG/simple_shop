@@ -1,0 +1,24 @@
+server:
+  port: 6000
+
+spring:
+  application:
+    name: organization-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/product_shop
+    username: root
+    password: root
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: create-drop
+        show_sql: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7000/eureka
+  instance:
+    prefer-ip-address: true

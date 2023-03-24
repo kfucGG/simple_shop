@@ -1,32 +1,43 @@
 package com.example.productservice.controller;
 
 
-import com.example.productservice.services.ProductServiceImpl;
+import com.example.productservice.dto.GradeDTO;
+import com.example.productservice.dto.ReviewDTO;
+import com.example.productservice.services.interfaces.GradeService;
+import com.example.productservice.services.interfaces.ProductService;
+import com.example.productservice.services.interfaces.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping()
+@RequestMapping("/products")
 @RequiredArgsConstructor
 public class ProductUserController {
 
-    private final ProductServiceImpl productServiceImpl;
+    private final ProductService productService;
+    private final GradeService gradeService;
+    private final ReviewService reviewService;
 
 
     @PostMapping("/buy")
-    public void buyProduct(@RequestParam("product_id") Long productId) {
-        productServiceImpl.buyProduct(productId);
+    public HttpStatus buyProduct(@RequestParam("product_id") Long productId,
+                                 @RequestHeader("user-id") Long userId) {
+        productService.buyProduct(productId, userId);
+        return HttpStatus.OK;
     }
 
     @PostMapping("/grade")
-    public void makeGrade(@RequestHeader("user-id") Long userId,
-                          @RequestParam("grade") Integer grade,
-                          @RequestParam("product_id") Long productId) {
-
+    public HttpStatus makeGrade(@RequestBody GradeDTO grade,
+                                @RequestHeader("user-id") Long userId) {
+        gradeService.addGradeToProduct(grade,userId);
+        return HttpStatus.OK;
     }
 
     @PostMapping("/review")
-    public void makeReview() {
-
+    public HttpStatus makeReview(@RequestBody ReviewDTO review,
+                                 @RequestHeader("user-id") Long userId) {
+        reviewService.addReviewToProduct(review, userId);
+        return HttpStatus.OK;
     }
 }

@@ -2,7 +2,7 @@ package com.example.productservice.controller;
 
 
 import com.example.productservice.dto.ProductDTO;
-import com.example.productservice.services.ProductService;
+import com.example.productservice.services.interfaces.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

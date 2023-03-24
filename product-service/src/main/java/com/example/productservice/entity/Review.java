@@ -1,14 +1,21 @@
 package com.example.productservice.entity;
 
+import com.example.productservice.dto.ReviewDTO;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class Review {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "review_seq")
+    @SequenceGenerator(name = "review_seq", sequenceName = "review_seq")
     private Long id;
 
     private String review;
@@ -18,4 +25,10 @@ public class Review {
     private Product product;
 
     private Long userId;
+
+    public Review(String review, Product product, Long userId) {
+        this.review = review;
+        this.product = product;
+        this.userId = userId;
+    }
 }
