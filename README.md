@@ -1,16 +1,16 @@
 # simple_shop
 
-Подразумевается, что все запросы проходят через gateway + вызываются только "open service", это след сервисы:\
+Подразумевается, что все запросы проходят через gateway + вызываются только след сервисы:\
 auth-service - на нем происходит auth/reg\
 admin-service - весь функционал админа\
 buyer-service - весь функционал обычного пользователя\
-Другие сервисы:
+Другие сервисы:\
 user-service - на нем хранятся все пользователи + операции над нами\
 product-service - все товары + скидки, оценки, отзывы\
 organization-service - все организации
 notice-service - уведомления 
 
-##buyer-service endpoints:
+## buyer-service endpoints:
 
 POST /buyer/buy?productId={} - купить товар\
 POST /buyer/grade - поставить оценку товару (нельзя если не куплен товар)\
@@ -23,7 +23,7 @@ GET /buyer/notice - уведомления пользователя\
 POST /buyer/organization/new - регистрация новой организации\
 POST /buyer/organization/newproduct - отправить запрос на рег продукта(только если орг прошла модерацию)\
 
-##admin-service endpoints:\
+## admin-service endpoints:\
 POST /admin/products/add - добавить новый товар\
 POST /admin/{productId}/update - обновить товар\
 
